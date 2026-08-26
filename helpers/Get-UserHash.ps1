@@ -13,6 +13,6 @@ function Get-UserHash {
     
     $ShortHash = ($HashBytes[0..3] | ForEach-Object { $_.ToString("x2") }) -join ""
     
-    return "user_$ShortHash.xml"
+    return "user_$ShortHash.json"
 }
 

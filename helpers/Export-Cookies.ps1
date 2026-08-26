@@ -1,5 +1,5 @@
 . "$PSScriptRoot\Get-UserHash.ps1"
-. "$PSScriptRoot\Update-UserRegistry.ps1"
+. "$PSScriptRoot\UserRegistry.ps1"
 
 
 function Export-Cookies {
@@ -18,7 +18,7 @@ function Export-Cookies {
         mkdir $CookieRootPath
     }
 
-    $Cookies | Export-Clixml -Path $CookieFilePath
+    $Cookies | ConvertTo-Json -Depth 5 | Out-File -Path $CookieFilePath
     
     # Update the config.json tracking registry so you know who is who
     Update-UserRegistry -Username $Username -FileName $FileName

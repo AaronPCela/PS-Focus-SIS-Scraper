@@ -26,10 +26,11 @@ function Get-Authentication {
             -Headers $RequestHeaders `
             -WebSession $WebSession > $null
 
-        $Cookies = $WebSession.Cookies.GetCookies($env:FOCUS_BASE_URL)
+        $Cookies = $WebSession.Cookies.GetAllCookies()
 
         Export-Cookies -Cookies $Cookies
         
+        return $WebSession
     }
     catch {
         Write-Error "The connection attempt returned an error: $_"
