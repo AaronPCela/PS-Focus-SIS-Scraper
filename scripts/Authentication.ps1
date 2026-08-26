@@ -1,16 +1,28 @@
 . "$PSScriptRoot\..\helpers\Export-Cookies.ps1"
+. "$PSScriptRoot\..\helpers\Import-Cookies.ps1"
 
 
 function Get-Authentication {
     [CmdletBinding()]
-    param ()
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$FocusUser,
+        [Parameter(Mandatory = $true)]
+        [String]$FocusPass
+    )
+
+    $ImportAttempt = Import-Cookies -Username $FocusUser
+
+    if ($ImportAttempt) {
+        return $ImportAttempt
+    }
 
     $WebSession = New-Object Microsoft.PowerShell.Commands.WebRequestSession
 
     # Payload for focus to authenticate
     $FormBody = @{
         login = "true"
-        data  = "username=$env:FOCUS_USER&password=$env:FOCUS_PASSWORD"
+        data  = "username=$FocusUser&password=$FocusPass"
     }
 
     $RequestHeaders = @{

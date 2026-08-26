@@ -21,12 +21,11 @@ function Import-Cookies {
                 # Add to session
                 $WebSession.Cookies.Add([System.Net.Cookie]$Data)
             }
-        Write-Host "Restored session for profile: $Username" -ForegroundColor Green
-    } else {
-        Write-Warning "The save was not found or the session expired for $Username.
-            Please authenticate the user first."
-    }
 
-    return $WebSession
+        Write-Host "Restored session for profile: $Username" -ForegroundColor Green
+        return $WebSession
+    } else {
+        return $null
+    }
 }
 
