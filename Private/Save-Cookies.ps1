@@ -1,21 +1,21 @@
 
 
 function Save-Cookies {
-    [CmdletBinding()]
     param (
-        [String]$Username = $script:Username,
-        [Microsoft.PowerShell.Commands.WebRequestSession]$WebSession = $script:WebSession,
-        [String]$CookieRootPath = "$script:ExportPath\Cookies"
+        [Parameter(Mandatory)]
+        [String]$Username,
+        [Parameter(Mandatory)]
+        [Microsoft.PowerShell.Commands.WebRequestSession]$WebSession,
+        [Parameter(Mandatory)]
+        [String]$ExportPath
     )
 
-    if (-not (Test-Path -Path $CookieRootPath)) {
-        New-Item -ItemType Directory -Path $CookieRootPath | Out-Null
+    if (-not (Test-Path -Path $ExportPath)) {
+        New-Item -ItemType Directory -Path $ExportPath | Out-Null
     }
 
-    $CookieFilePath = Join-Path -Path $CookieRootPath -ChildPath "user_$Username.json"
+    $CookieFilePath = Join-Path -Path $ExportPath -ChildPath "user_$Username.xml"
 
-    $WebSession.Cookies.GetAllCookies() | ConvertTo-Json -Depth 5 | Out-File -FilePath $CookieFilePath
-
-    Add-RegistryUser
+    $WebSession | Export-Clixml -Path $CookieFilePath
 }
 
