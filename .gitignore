@@ -1,6 +1,1 @@
-.env
-MainApp.ps1
-
-Exports/
-cookies/
-data/
+Data/
