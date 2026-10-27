@@ -1,11 +1,13 @@
 
 
 function Invoke-Authentication {
-    [CmdletBinding()]
     param (
-        [String]$Username = $script:Username,
-        [String]$Password = $script:Password,
-        [String]$FocusBaseUrl = $script:FocusBaseUrl
+        [Parameter(Mandatory)]
+        [String]$Username,
+        [Parameter(Mandatory)]
+        [String]$Password,
+        [Parameter(Mandatory)]
+        [String]$FocusBaseUrl
     )
 
     $WebSession = New-Object Microsoft.PowerShell.Commands.WebRequestSession
@@ -21,17 +23,15 @@ function Invoke-Authentication {
     }
 
     try {
-        $LoginUrl = "$FocusBaseUrl/focus/"
-
-        $Response = Invoke-WebRequest -Uri $LoginUrl `
+        $Response = Invoke-WebRequest -Uri $FocusBaseUrl `
             -Method Post `
             -Body $FormBody `
             -Headers $RequestHeaders `
             -WebSession $WebSession
-
+        
         return $WebSession
     } catch {
-        Write-Warning "Authentication failed. Error: $_"
+        Write-Error "Authentication failed. Error: $_"
         return $null
     }
 }
